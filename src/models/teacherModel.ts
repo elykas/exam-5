@@ -15,7 +15,7 @@ export interface ITeacher extends Document {
     fullName: string;
     email: string;
     password: string;
-    class: IClass;
+    class: Types.ObjectId;
   }
 
 
@@ -23,11 +23,12 @@ export interface ITeacher extends Document {
     className:{
         type:String,
         required: [true, "className is required"],
+        unique:true
 
     },
     teacher:{
         type:Schema.Types.ObjectId,
-        required:[true,"teacher is required"],ref:"Student"
+        ref:"teacher"
     },
     students:[{
         type:Schema.Types.ObjectId,ref: "Student"

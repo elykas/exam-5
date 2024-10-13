@@ -1,11 +1,12 @@
-import express, { Request, Router, Response, NextFunction } from "express";
-import Student, { Grade, IStudent } from "../models/studentModel";
-import {authMiddlewareStudent} from "../middleware/authMiddleware";
-import {register} from "../controllers/studentController";
-
-const router: Router = express.Router();
-
-/** 
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = __importDefault(require("express"));
+const studentController_1 = require("../controllers/studentController");
+const router = express_1.default.Router();
+/**
 * @swagger
 * /api/student/register:
 *   post:
@@ -39,7 +40,7 @@ const router: Router = express.Router();
 *         description: "No users found"
 *       500:
 *         description: "Server error"
-* @swagger 
+* @swagger
 *   /student/getGrades:
 *   get:
 *     summary: "Retrieve user grades"
@@ -51,8 +52,7 @@ const router: Router = express.Router();
 *       500:
 *         description: "Server error"
 */
-
-router.post("/register",register)
+router.post("/register", studentController_1.register);
 //router.get("/getGrades",authMiddlewareStudent,getStudentGrades)
 //router.get("/getGradesAvg",authMiddlewareStudent,getStudentGradesAverage)
-export default router;
+exports.default = router;

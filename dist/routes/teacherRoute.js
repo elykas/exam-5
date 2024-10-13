@@ -1,15 +1,16 @@
-import express, { Request, Router, Response, NextFunction } from "express";
-import Student, { Grade, IStudent } from "../models/studentModel";
-import {authMiddlewareStudent} from "../middleware/authMiddleware";
-import {register} from "../controllers/studentController";
-
-const router: Router = express.Router();
-
-/** 
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = __importDefault(require("express"));
+const teacherController_1 = require("../controllers/teacherController");
+const router = express_1.default.Router();
+/**
 * @swagger
-* /api/student/register:
+* /api/teacher/register:
 *   post:
-*     summary: "Register a student"
+*     summary: "Register a teacher and create class"
 *     requestBody:
 *       required: true
 *       content:
@@ -27,8 +28,7 @@ const router: Router = express.Router();
 *                 type: string
 *     responses:
 *       201:
-*         description: "A JSON object of the student"
-*
+*         description: "A JSON object id of the class"
 *   /student/getGradesAvg:
 *   get:
 *     summary: "Retrieve user grades avg"
@@ -39,7 +39,7 @@ const router: Router = express.Router();
 *         description: "No users found"
 *       500:
 *         description: "Server error"
-* @swagger 
+* @swagger
 *   /student/getGrades:
 *   get:
 *     summary: "Retrieve user grades"
@@ -51,8 +51,7 @@ const router: Router = express.Router();
 *       500:
 *         description: "Server error"
 */
-
-router.post("/register",register)
+router.post("/register", teacherController_1.registerTeacher);
 //router.get("/getGrades",authMiddlewareStudent,getStudentGrades)
 //router.get("/getGradesAvg",authMiddlewareStudent,getStudentGradesAverage)
-export default router;
+exports.default = router;
