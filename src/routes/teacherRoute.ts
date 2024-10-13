@@ -50,6 +50,5 @@ const router: Router = express.Router();
 */
 
 router.post("/register",registerTeacher)
-//router.get("/getGrades",authMiddlewareStudent,getStudentGrades)
-//router.get("/getGradesAvg",authMiddlewareStudent,getStudentGradesAverage)
+
 export default router;

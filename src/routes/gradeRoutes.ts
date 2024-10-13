@@ -18,6 +18,8 @@ const router = express.Router();
  *                 type: string
  *               grade:
  *                 type: number
+ *               message:
+ *                 type:string
  *     responses:
  *       200:
  *         description: "Successfully added grade"
