@@ -114,7 +114,7 @@ export const addGrade = async (req: any, res: Response) => {
                return;
           }
   
-          res.status(200).json({ data: averages, success: true });
+          res.status(200).json(new ResponseStructure(true,averages));
       } catch (error) {
           res.status(500).json({ message: "Server error", success: false });
       }
@@ -132,9 +132,11 @@ export const getGradesByEmail = async(req: any, res: Response) => {
            res.status(404).json(new ResponseStructure(false,"teacher not found"));
            return
         }
-        const email = req.body.email;
-        const studentEmail = req.body.email;
-        const student: IStudent | null = await studentModel.findOne({ email: studentEmail });
+        const email = req.params.email;
+        const student: IStudent | null = await studentModel.findOne(
+            { email: email }, 
+            { fullName: 1, grades: 1 }
+          );
         if (!student) {
              res.status(404).json(new ResponseStructure(false, "Student not found"));
              return
