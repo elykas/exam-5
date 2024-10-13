@@ -3,6 +3,7 @@ import studentModel,{IStudent,Grade} from "../models/studentModel";
 import { Request, Response, NextFunction } from "express";
 import { addGradeService, findStudentByEmail ,editGradeService} from "../services/gradeService";
 import { ResponseStructure } from "../types/response";
+import teacherModel from "../models/teacherModel";
 
 
 export const addGrade = async (req: any, res: Response) => {
@@ -38,46 +39,39 @@ export const addGrade = async (req: any, res: Response) => {
         if (!updatedGrade) {
           res
             .status(400)
-            .json({ message: "Grade and subject are required", success: false });
+            .json(new ResponseStructure(false,"grade are required"));
           return;
         }
-  
-       
         res
           .status(200)
-          .json({
-            data: updatedGrade,
-            message: "Grade updated successfully",
-            success: true,
-          });
+          .json(new ResponseStructure(true,"grade updated successfully"));
       } catch (error) {
         res.status(500).json({ message: "Server error", success: false });
       }
     };
   
   
-    export const getAllUsers = async(req: any, res: Response) => {
-      try {
-          const users = await User.find();
-          if (users.length === 0) {
-               res.status(404).json({ message: "No users found", success: false });
-               return
-            }
-            res.status(200).json({ data: users, success: true });
-      } catch (error) {
-          res.status(500).json({ message: "Server error", success: false });
-      }
-    }
+
   
     export const getAllUsersGrades = async(req: any, res: Response) => {
       try {
-          const users = await User.find({role:'student'}, { grades: 1, _id: 0 });
-  
-          if (users.length === 0) {
+          const teacher = await teacherModel.findById(req.user._id).populate({
+            path:"class",
+            select:"className"
+          })
+
+          if (!teacher) {
+            return res.status(404).json(new ResponseStructure(false,"teacher not found"));
+          }
+          const students = await studentModel.find(
+            { class: teacher.class._id }, 
+            { grades: 1, _id: 0 } 
+          );
+          if (students.length === 0) {
                res.status(404).json({ message: "No users found", success: false });
                return
             }
-            res.status(200).json({ data: users, success: true });
+            res.status(200).json(new ResponseStructure(true,"all grades"));
       } catch (error) {
           res.status(500).json({ message: "Server error", success: false });
       }
@@ -85,26 +79,34 @@ export const addGrade = async (req: any, res: Response) => {
   
   
   
-    export const getAllUsersGradesAverage = async(req: any, res: Response) => {
+    export const getClassGradesAverage = async(req: any, res: Response) => {
       try {
-          const averages = await User.aggregate([
-              { $match: { role: 'student'  }},
-              { $unwind: { path: '$grades', preserveNullAndEmptyArrays: true } },
-              {
-                  $group: {
-                      _id: '$_id',  
-                      averageGrade: { $avg: '$grades.grade' } 
-                  }
+        const teacher = await teacherModel.findById(req.user._id).populate({
+            path:"class",
+            select:"className"
+          })
+
+          if (!teacher) {
+            return res.status(404).json(new ResponseStructure(false,"teacher not found"));
+          }
+          const averages = await studentModel.aggregate([
+            { $match: { class: teacher.class._id } }, 
+            { $unwind: { path: "$grades", preserveNullAndEmptyArrays: true } },
+            {
+              $group: {
+                _id: "$_id", 
+                averageGrade: { $avg: "$grades.grade" },
               },
-              {
-                  $project: {
-                      userId: '$passportId',
-                      averageGrade: 1, 
-                      _id: 0 
-                  }
-              }
+            },
+            {
+              $project: {
+                userId: "$_id", 
+                averageGrade: 1,
+                _id: 0,
+              },
+            },
           ]);
-  
+      
           if (averages.length === 0) {
                res.status(404).json({ message: "No users found", success: false });
                return;
@@ -117,29 +119,28 @@ export const addGrade = async (req: any, res: Response) => {
     }
   
     
-    export const removeStudent = async (req: any, res: Response) => {
-        try {
-          const userId = req.body.passportId;
-          const user: IUser | null = await findStudentByEmail(userId)
-          if(!user){
-              res.status(404).json({ message: "user not found", success: false });
-              return;
+export getGradeByEmail =    async(req: any, res: Response) => {
+    try {
+        const teacher = await teacherModel.findById(req.user._id).populate({
+          path:"class",
+          select:"className"
+        })
+
+        if (!teacher) {
+          return res.status(404).json(new ResponseStructure(false,"teacher not found"));
+        }
+        const students = await studentModel.find(
+          { class: teacher.class._id }, 
+          { grades: 1, _id: 0 } 
+        );
+        if (students.length === 0) {
+             res.status(404).json({ message: "No users found", success: false });
+             return
           }
-    
-        await User.deleteOne({ passportId: userId });
-        res
-          .status(200)
-          .json({
-            data: user,
-            message: "user removed successfully",
-            success: true,
-          });
-      } catch (error) {
+          res.status(200).json(new ResponseStructure(true,"all grades"));
+    } catch (error) {
         res.status(500).json({ message: "Server error", success: false });
-      }
-    };
-  
-  
-    
-    
+    }
+  }
+ 
   

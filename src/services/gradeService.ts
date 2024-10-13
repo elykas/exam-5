@@ -37,7 +37,7 @@ export const findStudentByEmail = async(email:string) =>{
             { $set: { "grades.$.grade": data.grade } }
           );
         
-      
+      return student;
         }    
 
 
