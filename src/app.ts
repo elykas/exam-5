@@ -23,7 +23,7 @@ connectDB();
 app.use("/api/login",authRouter)
 app.use("/api/student", studentRouter);
 app.use("/api/teacher", teacherRouter);
-app.use("/api/grades",gradesRoute)
+app.use("/api/grades",gradesRoutes)
 
 app.use(errorHandler);
 
