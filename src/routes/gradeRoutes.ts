@@ -1,6 +1,6 @@
 import express from "express";
 import { authMiddlewareTeacher } from "../middleware/authMiddleware.js";
-import { addGrade, editGrade, getAllUsers as getAllStudents, getAllUsersGrades as getStudentGrade, getAllUsersGradesAverage, removeGrade, removeStudent } from "../controllers/teacherController.js";
+import { addGrade, editGrade, getAllUsersGrades, getGradesByEmail, getClassGradesAverage } from "../controllers/gradeController";
 const router = express.Router();
 /**
  * @swagger
@@ -85,7 +85,7 @@ const router = express.Router();
 router.use(authMiddlewareTeacher);
 router.post("/", addGrade);
 router.put("/", editGrade);
-router.get("/", getAllStudents);
-router.get("/:email", getStudentGrade);
-router.get("/averageGrades", getAllUsersGradesAverage);
+router.get("/", getAllUsersGrades);
+router.get("/:email", getGradesByEmail);
+router.get("/averageGrades",  getClassGradesAverage);
 export default router;

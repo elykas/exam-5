@@ -41,7 +41,7 @@ export const findStudentByEmail = async(email:string) =>{
         }    
 
 
-    const checkIfTeacherClass= async(teacherId:string,student:IStudent)=>{
+    export const checkIfTeacherClass= async(teacherId:string,student:IStudent)=>{
         const teacher = await teacherModel.findById(teacherId);
       if(!teacher){
         return null;
