@@ -1,7 +1,12 @@
-import express from "express";
-import { authMiddlewareTeacher } from "../middleware/authMiddleware";
-import { addGrade, editGrade, getAllUsersGrades, getGradesByEmail, getClassGradesAverage } from "../controllers/gradeController";
-const router = express.Router();
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = __importDefault(require("express"));
+const authMiddleware_1 = require("../middleware/authMiddleware");
+const gradeController_1 = require("../controllers/gradeController");
+const router = express_1.default.Router();
 /**
  * @swagger
  * /api/grades:
@@ -26,7 +31,6 @@ const router = express.Router();
  *       401:
  *         description: "Unauthorized"
  */
-
 /**
  * @swagger
  * /api/grades:
@@ -49,7 +53,6 @@ const router = express.Router();
  *       401:
  *         description: "Unauthorized"
  */
-
 /**
  * @swagger
  * /api/grades:
@@ -63,7 +66,6 @@ const router = express.Router();
  *       500:
  *         description: "Server error"
  */
-
 /**
  * @swagger
  * /api/grades/averageGrades:
@@ -77,7 +79,6 @@ const router = express.Router();
  *       500:
  *         description: "Server error"
  */
-
 /**
  * @swagger
  * /api/grades/{email}:
@@ -98,10 +99,10 @@ const router = express.Router();
  *       500:
  *         description: "Server error"
  */
-router.use(authMiddlewareTeacher);
-router.post("/", addGrade);
-router.put("/", editGrade);
-router.get("/", getAllUsersGrades);
-router.get("/averageGrades", getClassGradesAverage);
-router.get("/:email", getGradesByEmail);
-export default router;
+router.use(authMiddleware_1.authMiddlewareTeacher);
+router.post("/", gradeController_1.addGrade);
+router.put("/", gradeController_1.editGrade);
+router.get("/", gradeController_1.getAllUsersGrades);
+router.get("/:email", gradeController_1.getGradesByEmail);
+router.get("/averageGrades", gradeController_1.getClassGradesAverage);
+exports.default = router;

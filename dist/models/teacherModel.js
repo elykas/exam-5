@@ -33,6 +33,7 @@ const ClassSchema = new mongoose_1.Schema({
     className: {
         type: String,
         required: [true, "className is required"],
+        unique: true
     },
     teacher: {
         type: mongoose_1.Schema.Types.ObjectId,

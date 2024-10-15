@@ -26,27 +26,6 @@ const router: Router = express.Router();
 *     responses:
 *       201:
 *         description: "A JSON object id of the class" 
-*   /student/getGradesAvg:
-*   get:
-*     summary: "Retrieve user grades avg"
-*     responses:
-*       200:
-*         description: "A JSON array of users"
-*       404:
-*         description: "No users found"
-*       500:
-*         description: "Server error"
-* @swagger 
-*   /student/getGrades:
-*   get:
-*     summary: "Retrieve user grades"
-*     responses:
-*       200:
-*         description: "A JSON array of users"
-*       404:
-*         description: "No users found"
-*       500:
-*         description: "Server error"
 */
 
 router.post("/register",registerTeacher)

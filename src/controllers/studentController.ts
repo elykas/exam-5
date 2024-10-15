@@ -21,16 +21,17 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
   export const getStudentGrades = async(req: any, res: Response) => {
     try {
         
-        const studentEmail = req.body.email;
-        const student: IStudent | null = await Student.findOne(
-          { email: studentEmail },
+        const studentId = req.user._id;
+        
+        const student: IStudent | null = await Student.findById(
+          { _id: studentId },
           { fullName: 1, grades: 1 } 
         );
         if (!student) {
              res.status(404).json(new ResponseStructure(false, "Student not found"));
              return
           }
-          res.status(200).json(new ResponseStructure(true,"all grades"));
+          res.status(200).json(new ResponseStructure(true,student));
     } catch (error) {
         res.status(500).json({ message: "Server error", success: false });
     }

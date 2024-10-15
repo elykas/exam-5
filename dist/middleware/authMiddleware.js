@@ -20,7 +20,7 @@ const verifyTokenAndRole = (req, res, next, status) => {
     try {
         const decoded = jsonwebtoken_1.default.verify(token, JWT_SECRET);
         req.user = decoded;
-        if (decoded.role !== status) {
+        if (decoded.status !== status) {
             res.status(403).json({ message: `Access denied: Not a ${status}` });
             return;
         }

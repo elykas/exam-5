@@ -29,8 +29,10 @@ const router: Router = express.Router();
 *       201:
 *         description: "A JSON object of the student"
 *
+* @swagger 
+* /api/student/getGrades:
 *   get:
-*     summary: "Retrieve user grades"
+*     summary: "Retrieve students grades"
 *     responses:
 *       200:
 *         description: "A JSON array of users"
@@ -41,6 +43,6 @@ const router: Router = express.Router();
 */
 
 router.post("/register",register)
-router.get("/getGrades",authMiddlewareStudent,getStudentGrades)
+router.get("/getGrades/",authMiddlewareStudent,getStudentGrades)
 
 export default router;

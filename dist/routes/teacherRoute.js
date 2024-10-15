@@ -52,6 +52,4 @@ const router = express_1.default.Router();
 *         description: "Server error"
 */
 router.post("/register", teacherController_1.registerTeacher);
-//router.get("/getGrades",authMiddlewareStudent,getStudentGrades)
-//router.get("/getGradesAvg",authMiddlewareStudent,getStudentGradesAverage)
 exports.default = router;

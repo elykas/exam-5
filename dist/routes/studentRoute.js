@@ -4,6 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
+const authMiddleware_1 = require("../middleware/authMiddleware");
 const studentController_1 = require("../controllers/studentController");
 const router = express_1.default.Router();
 /**
@@ -30,18 +31,6 @@ const router = express_1.default.Router();
 *       201:
 *         description: "A JSON object of the student"
 *
-*   /student/getGradesAvg:
-*   get:
-*     summary: "Retrieve user grades avg"
-*     responses:
-*       200:
-*         description: "A JSON array of users"
-*       404:
-*         description: "No users found"
-*       500:
-*         description: "Server error"
-* @swagger
-*   /student/getGrades:
 *   get:
 *     summary: "Retrieve user grades"
 *     responses:
@@ -53,6 +42,5 @@ const router = express_1.default.Router();
 *         description: "Server error"
 */
 router.post("/register", studentController_1.register);
-//router.get("/getGrades",authMiddlewareStudent,getStudentGrades)
-//router.get("/getGradesAvg",authMiddlewareStudent,getStudentGradesAverage)
+router.get("/getGrades", authMiddleware_1.authMiddlewareStudent, studentController_1.getStudentGrades);
 exports.default = router;

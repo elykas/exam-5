@@ -8,17 +8,18 @@ import teacherModel from "../models/teacherModel";
 
 export const addGrade = async (req: any, res: Response) => {
     try {
+      
       const userId = req.body.email;
       const user: IStudent | null = await findStudentByEmail(userId)
       if(!user){
-          res.status(404).json(new ResponseStructure(false,"student not found"));
-          return;
+        res.status(404).json(new ResponseStructure(false,"student not found"));
+        return;
       }
       const { grade, message }: { grade: number; message: string } = req.body;
-  
+      
       const addedGrade = await addGradeService(req.body,req.user._id,user)
       
-      res.status(200).json(new ResponseStructure(true,addGrade));
+      res.status(200).json(new ResponseStructure(true,addedGrade));
     } catch (error) {
       res.status(500).json({ message: "Server error", success: false });
     }
@@ -72,7 +73,7 @@ export const addGrade = async (req: any, res: Response) => {
                res.status(404).json({ message: "No users found", success: false });
                return
             }
-            res.status(200).json(new ResponseStructure(true,"all grades"));
+            res.status(200).json(new ResponseStructure(true,students));
       } catch (error) {
           res.status(500).json({ message: "Server error", success: false });
       }
@@ -96,13 +97,12 @@ export const addGrade = async (req: any, res: Response) => {
             { $unwind: { path: "$grades", preserveNullAndEmptyArrays: true } },
             {
               $group: {
-                _id: "$_id", 
+                _id: null, 
                 averageGrade: { $avg: "$grades.grade" },
               },
             },
             {
               $project: {
-                userId: "$_id", 
                 averageGrade: 1,
                 _id: 0,
               },

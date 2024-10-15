@@ -12,8 +12,9 @@ export const findStudentByEmail = async(email:string) =>{
 
   export const addGradeService = async (data: any, teacherId: any, student: IStudent) => {
 
+    console.log("hello");
     const isSameClass = await checkIfTeacherClass(teacherId,student)
-
+    
       if(!isSameClass){
         return null;
       }
@@ -42,12 +43,14 @@ export const findStudentByEmail = async(email:string) =>{
 
 
     export const checkIfTeacherClass= async(teacherId:string,student:IStudent)=>{
-        const teacher = await teacherModel.findById(teacherId);
+      
+      const teacher = await teacherModel.findById(teacherId);
       if(!teacher){
+        
         return null;
       }
-
-      if (teacher.class._id !== student.class._id) {
+      
+      if (teacher.class._id.toString() !== student.class._id.toString()) {
         throw new Error("Teacher does not in this class");
         return
       }
